@@ -10,4 +10,7 @@ val Purple40 = Color(0xFF6650a4)
 val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
 
-val splashBack = Color(0xFF485fa3)
+
+//Custom Colors
+val lightPurple = Color(0xFFC4C3E3)
+val blueColor = Color(0xFF379ae6)
