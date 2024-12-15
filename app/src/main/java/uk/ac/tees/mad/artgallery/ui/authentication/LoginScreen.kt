@@ -1,5 +1,6 @@
 package uk.ac.tees.mad.artgallery.ui.authentication
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -35,18 +36,24 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import uk.ac.tees.mad.artgallery.ui.theme.blueColor
+import androidx.navigation.NavController
+import uk.ac.tees.mad.artgallery.R
+import uk.ac.tees.mad.artgallery.ui.theme.color1
+import uk.ac.tees.mad.artgallery.ui.theme.color2
+import uk.ac.tees.mad.artgallery.ui.theme.color3
 import uk.ac.tees.mad.artgallery.ui.theme.lightPurple
 
 
-@Preview
 @Composable
-fun LoginScreen(){
+fun LoginScreen(
+    navController: NavController
+){
 
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -59,124 +66,163 @@ fun LoginScreen(){
             .background(
                 Brush.verticalGradient(
                     listOf(
-                        Color.Blue,
-                        blueColor,
-                        lightPurple
-
+                        color1,
+                        color2,
+                        color3
                     )
                 )
             ),
         contentAlignment = Alignment.Center
     ){
-        Card (
-            modifier = Modifier.padding(5.dp),
-            shape = RoundedCornerShape(20.dp),
-            elevation = CardDefaults.elevatedCardElevation(10.dp)
-        ){
-            Column (
-                modifier = Modifier
-                    .padding(20.dp)
-                    .fillMaxWidth(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Spacer(modifier = Modifier.weight(0.6f))
+            Image(
+                painter = painterResource(id = R.drawable.newicon),
+                contentDescription = "Image"
+            )
+
+            Spacer(modifier = Modifier.size(20.dp))
+
+            Card (
+                modifier = Modifier.padding(5.dp),
+                shape = RoundedCornerShape(20.dp),
+                elevation = CardDefaults.elevatedCardElevation(10.dp)
             ){
-                OutlinedTextField(
+                Box (
                     modifier = Modifier
-                        .fillMaxWidth(0.8f),
-                    value = username,
-                    onValueChange = {
-                        username = it
-                    },
-                    leadingIcon = { Icon(
-                        imageVector = Icons.Filled.Person,
-                        contentDescription = "usernameIcon"
-                    )},
-                    label = { Text(text = "Username")},
-                    shape = RoundedCornerShape(50.dp),
-                    colors = OutlinedTextFieldDefaults.colors(
-                        unfocusedContainerColor = Color.Transparent,
-                        focusedContainerColor = lightPurple,
-                        focusedLabelColor = Color.Black,
-                        focusedBorderColor = Color.Black,
-                        unfocusedBorderColor = Color.Black
-                    )
-                )
-
-                Spacer(modifier = Modifier.size(15.dp))
-                OutlinedTextField(
-                    modifier = Modifier
-                        .fillMaxWidth(0.8f),
-                    value = password,
-                    onValueChange = {
-                        password = it
-                    },
-                    visualTransformation = if(passwordVisibility)VisualTransformation.None else PasswordVisualTransformation(),
-                    leadingIcon = { Icon(
-                        imageVector = Icons.Filled.Key,
-                        contentDescription = "Password icon"
-                    )},
-                    trailingIcon = {
-                        val showPassword = if (passwordVisibility)
-                            Icons.Filled.Visibility
-                        else
-                            Icons.Filled.VisibilityOff
-
-                        IconButton(onClick = { passwordVisibility = !passwordVisibility}) {
-                            Icon(
-                                imageVector = showPassword,
-                                contentDescription = "Show Password")
-                        }
-                    },
-                    label={
-                        Text(text = "Password")
-                    },
-                    shape = RoundedCornerShape(50.dp),
-                    colors = OutlinedTextFieldDefaults.colors(
-                        unfocusedContainerColor = Color.Unspecified,
-                        focusedContainerColor = lightPurple,
-                        focusedLabelColor = Color.Black,
-                        focusedBorderColor = Color.Black,
-                        unfocusedBorderColor = Color.Black
-                    )
-                )
-
-                Row (
-                    modifier = Modifier
-                        .fillMaxWidth(0.8f),
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
+                        .fillMaxWidth()
+                        .background(Brush.linearGradient(
+                            0.36f to Color(0xFFb188d6),
+                            1.0f to Color(0xFFd490db)
+                        ))
                 ){
-                    Checkbox(
-                        checked = isChecked,
-                        onCheckedChange ={
-                            isChecked = it
+                    Column (
+                        modifier = Modifier
+                            .padding(20.dp)
+                            .fillMaxWidth(),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ){
+                        OutlinedTextField(
+                            modifier = Modifier
+                                .fillMaxWidth(0.8f),
+                            value = username,
+                            onValueChange = {
+                                username = it
+                            },
+                            leadingIcon = { Icon(
+                                imageVector = Icons.Filled.Person,
+                                contentDescription = "usernameIcon"
+                            )},
+                            label = { Text(text = "Username")},
+                            shape = RoundedCornerShape(50.dp),
+                            colors = OutlinedTextFieldDefaults.colors(
+                                focusedLabelColor = Color.Black,
+                                focusedBorderColor = Color.Black,
+                                unfocusedBorderColor = Color.Black
+                            )
+                        )
+
+                        Spacer(modifier = Modifier.size(15.dp))
+                        OutlinedTextField(
+                            modifier = Modifier
+                                .fillMaxWidth(0.8f),
+                            value = password,
+                            onValueChange = {
+                                password = it
+                            },
+                            visualTransformation = if(passwordVisibility)VisualTransformation.None else PasswordVisualTransformation(),
+                            leadingIcon = { Icon(
+                                imageVector = Icons.Filled.Key,
+                                contentDescription = "Password icon"
+                            )},
+                            trailingIcon = {
+                                val showPassword = if (passwordVisibility)
+                                    Icons.Filled.Visibility
+                                else
+                                    Icons.Filled.VisibilityOff
+
+                                IconButton(onClick = { passwordVisibility = !passwordVisibility}) {
+                                    Icon(
+                                        imageVector = showPassword,
+                                        contentDescription = "Show Password")
+                                }
+                            },
+                            label={
+                                Text(text = "Password")
+                            },
+                            shape = RoundedCornerShape(50.dp),
+                            colors = OutlinedTextFieldDefaults.colors(
+                                focusedBorderColor = Color.Black,
+                                unfocusedBorderColor = Color.Black
+                            )
+                        )
+
+                        Row (
+                            modifier = Modifier
+                                .fillMaxWidth(0.8f),
+                            horizontalArrangement = Arrangement.Center,
+                            verticalAlignment = Alignment.CenterVertically
+                        ){
+                            Checkbox(
+                                checked = isChecked,
+                                onCheckedChange ={
+                                    isChecked = it
+                                }
+                            )
+                            Text(
+                                text = "Remember me?",
+                                fontSize = 15.sp,
+                                modifier = Modifier
+                                    .clickable {
+                                        isChecked = !isChecked
+                                    }
+                            )
+                            Spacer(modifier = Modifier.weight(1f))
+                            Text(
+                                text = "Forgot Password?",
+                                fontSize = 15.sp,
+                                modifier = Modifier
+                                    .clickable {
+
+                                    }
+                            )
                         }
-                    )
-                    Text(
-                        text = "Remember me?",
-                        fontSize = 15.sp,
-                        modifier = Modifier
-                            .clickable {
-                                isChecked = !isChecked
-                            }
-                    )
-                    Spacer(modifier = Modifier.weight(1f))
-                    Text(
-                        text = "Forgot Password?",
-                        fontSize = 15.sp,
-                        modifier = Modifier
-                            .clickable {
+                        Row (
+                            modifier = Modifier
+                                .fillMaxWidth(0.8f),
+                            horizontalArrangement = Arrangement.Center,
+                            verticalAlignment = Alignment.CenterVertically
+                        ){
+                            Text(
+                                text = "Not have account?"
+                            )
+                            Spacer(modifier = Modifier.size(5.dp))
+                            Text(
+                                text = "Create one here!",
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 15.sp,
+                                modifier = Modifier
+                                    .clickable {
+                                        navController.popBackStack()
+                                        navController.navigate("signup_screen")
+                                    }
+                            )
+                        }
 
-                            }
-                    )
-                }
-
-                Spacer(modifier = Modifier.size((20.dp)))
-                Button(onClick = { /*TODO*/ }) {
-                    Text(text = "Login",
-                        fontSize = 15.sp)
+                        Spacer(modifier = Modifier.size((20.dp)))
+                        Button(onClick = { /*TODO*/ }) {
+                            Text(text = "Login",
+                                fontSize = 15.sp)
+                        }
+                    }
                 }
             }
+
+            Spacer(modifier = Modifier.weight(1f))
         }
     }
 }

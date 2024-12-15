@@ -21,3 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Art Gallery"
 include(":app")
+ 

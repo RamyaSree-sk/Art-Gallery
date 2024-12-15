@@ -8,22 +8,21 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import uk.ac.tees.mad.artgallery.ui.authentication.LoginScreen
+import uk.ac.tees.mad.artgallery.ui.authentication.AuthenticationNav
 import uk.ac.tees.mad.artgallery.ui.theme.ArtGalleryTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
         installSplashScreen().apply {
             GlobalScope.launch {
                 delay(3000L)
             }
         }
+        super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             ArtGalleryTheme {
-                LoginScreen()
+                AuthenticationNav()
             }
         }
     }
