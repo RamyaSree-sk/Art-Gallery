@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import uk.ac.tees.mad.artgallery.R
+import uk.ac.tees.mad.artgallery.firebaseauth.viewmodel.AuthViewModel
 import uk.ac.tees.mad.artgallery.ui.theme.color1
 import uk.ac.tees.mad.artgallery.ui.theme.color2
 import uk.ac.tees.mad.artgallery.ui.theme.color3

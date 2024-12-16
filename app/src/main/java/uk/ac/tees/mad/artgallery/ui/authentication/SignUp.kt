@@ -29,6 +29,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -45,7 +46,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.google.rpc.context.AttributeContext.Auth
 import uk.ac.tees.mad.artgallery.R
+import uk.ac.tees.mad.artgallery.firebaseauth.state.AuthState
+import uk.ac.tees.mad.artgallery.firebaseauth.viewmodel.AuthViewModel
 import uk.ac.tees.mad.artgallery.ui.theme.color1
 import uk.ac.tees.mad.artgallery.ui.theme.color2
 import uk.ac.tees.mad.artgallery.ui.theme.color3
@@ -54,14 +58,35 @@ import uk.ac.tees.mad.artgallery.ui.theme.lightPurple
 
 @Composable
 fun SignUpScreen(
-    navController: NavController
+    navController: NavController,
+    authViewModel: AuthViewModel
 ){
 
-    var username by remember { mutableStateOf("") }
+    val authState by authViewModel.authState.collectAsState()
+
+    var errorMessage by remember { mutableStateOf("") }
+
     var password by remember { mutableStateOf("") }
     var passwordVisibility by remember { mutableStateOf(false) }
     var fullName by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
+
+    when(authState){
+        is AuthState.Success->{
+            navController.navigate("on_boarding")
+        }
+
+        is AuthState.Failure->{
+            errorMessage = (authState as AuthState.Failure).message
+        }
+
+        is AuthState.Loading->{
+
+        }
+
+        else -> {}
+
+    }
 
     Box(
         modifier = Modifier
@@ -96,10 +121,12 @@ fun SignUpScreen(
                 Box (
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(Brush.linearGradient(
-                            0.36f to Color(0xFFb188d6),
-                            1.0f to Color(0xFFd490db)
-                        ))
+                        .background(
+                            Brush.linearGradient(
+                                0.36f to Color(0xFFb188d6),
+                                1.0f to Color(0xFFd490db)
+                            )
+                        )
                 ) {
 
                     Column(
@@ -148,31 +175,6 @@ fun SignUpScreen(
                                 )
                             },
                             label = { Text(text = "Email") },
-                            shape = RoundedCornerShape(50.dp),
-                            colors = OutlinedTextFieldDefaults.colors(
-                                unfocusedContainerColor = Color.Transparent,
-                                focusedContainerColor = lightPurple,
-                                focusedLabelColor = Color.Black,
-                                focusedBorderColor = Color.Black,
-                                unfocusedBorderColor = Color.Black
-                            )
-                        )
-                        Spacer(modifier = Modifier.size(15.dp))
-
-                        OutlinedTextField(
-                            modifier = Modifier
-                                .fillMaxWidth(0.8f),
-                            value = username,
-                            onValueChange = {
-                                username = it
-                            },
-                            leadingIcon = {
-                                Icon(
-                                    imageVector = Icons.Filled.Person,
-                                    contentDescription = "usernameIcon"
-                                )
-                            },
-                            label = { Text(text = "Username") },
                             shape = RoundedCornerShape(50.dp),
                             colors = OutlinedTextFieldDefaults.colors(
                                 unfocusedContainerColor = Color.Transparent,
@@ -289,7 +291,7 @@ fun SignUpScreen(
 
                         Spacer(modifier = Modifier.size((20.dp)))
                         Button(onClick = {
-
+                            authViewModel.signUp(fullName, email, password)
                         }) {
                             Text(
                                 text = "SignUp",
@@ -298,6 +300,14 @@ fun SignUpScreen(
                         }
                     }
                 }
+            }
+
+            if (errorMessage.isNotEmpty()) {
+                Spacer(modifier = Modifier.size(10.dp))
+                Text(
+                    text = "Unable to Sign up $errorMessage",
+                    fontSize = 18.sp
+                )
             }
             Spacer(modifier = Modifier.weight(1f))
         }
