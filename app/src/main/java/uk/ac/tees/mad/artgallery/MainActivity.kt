@@ -5,11 +5,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.navigation.compose.rememberNavController
 import uk.ac.tees.mad.artgallery.firebaseauth.viewmodel.AuthViewModel
-import uk.ac.tees.mad.artgallery.ui.authentication.AuthenticationNav
 import uk.ac.tees.mad.artgallery.ui.theme.ArtGalleryTheme
 
 class MainActivity : ComponentActivity() {
@@ -18,24 +16,21 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        var desti = "home"
-
         installSplashScreen().apply {
             setKeepOnScreenCondition{
                 authViewModel.showSplash.value
             }
-            if (authViewModel.isLoggedIn.value) {
-                desti="home"
-            }
-            else{
-                desti="authentication"
-            }
         }
+
+        val authenticated = authViewModel.isLoggedIn.value
+
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+
+            val navController = rememberNavController()
             ArtGalleryTheme {
-                ArtGalleryNav(desti)
+                MainNavigation(navController, authenticated)
             }
         }
     }

@@ -10,15 +10,14 @@ import androidx.compose.ui.unit.sp
 
 
 @Composable
-fun HomeScreen(){
-
+fun ProfileScreen(){
     Box(
         modifier = Modifier
             .fillMaxSize()
     ) {
         Column {
             Text(
-                text = "This is the Home Screen!!",
+                text = "This is the Profile Screen!!",
                 fontSize = 20.sp
             )
         }

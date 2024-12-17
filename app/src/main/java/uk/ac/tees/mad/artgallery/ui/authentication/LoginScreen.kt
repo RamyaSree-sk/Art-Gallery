@@ -77,7 +77,9 @@ fun LoginScreen(
         }
 
         is AuthState.Success->{
-            navController.navigate("on_boarding")
+            navController.navigate("home"){
+                popUpTo("login_screen"){inclusive=true}
+            }
         }
 
         is AuthState.Failure->{
@@ -236,8 +238,9 @@ fun LoginScreen(
                                 fontSize = 15.sp,
                                 modifier = Modifier
                                     .clickable {
-                                        navController.popBackStack()
-                                        navController.navigate("signup_screen")
+                                        navController.navigate("signup_screen"){
+                                            popUpTo("login_screen"){inclusive=true}
+                                        }
                                     }
                             )
                         }

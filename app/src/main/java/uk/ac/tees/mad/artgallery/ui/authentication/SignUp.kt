@@ -64,7 +64,7 @@ fun SignUpScreen(
 
     val authState by authViewModel.authState.collectAsState()
 
-    var errorMessage by remember { mutableStateOf("") }
+    var errorMessageSignUp by remember { mutableStateOf("") }
 
     var password by remember { mutableStateOf("") }
     var passwordVisibility by remember { mutableStateOf(false) }
@@ -73,11 +73,13 @@ fun SignUpScreen(
 
     when(authState){
         is AuthState.Success->{
-            navController.navigate("on_boarding")
+            navController.navigate("home"){
+                popUpTo("login_screen"){inclusive=true}
+            }
         }
 
         is AuthState.Failure->{
-            errorMessage = (authState as AuthState.Failure).message
+            errorMessageSignUp = (authState as AuthState.Failure).message
         }
 
         is AuthState.Loading->{
@@ -283,8 +285,9 @@ fun SignUpScreen(
                                 fontSize = 15.sp,
                                 modifier = Modifier
                                     .clickable {
-                                        navController.popBackStack()
-                                        navController.navigate("login_screen")
+                                        navController.navigate("login_screen"){
+                                            popUpTo("signup_screen"){inclusive=true}
+                                        }
                                     }
                             )
                         }
@@ -302,10 +305,10 @@ fun SignUpScreen(
                 }
             }
 
-            if (errorMessage.isNotEmpty()) {
+            if (errorMessageSignUp.isNotEmpty()) {
                 Spacer(modifier = Modifier.size(10.dp))
                 Text(
-                    text = "Unable to Sign up $errorMessage",
+                    text = "Unable to Sign up $errorMessageSignUp",
                     fontSize = 18.sp
                 )
             }
