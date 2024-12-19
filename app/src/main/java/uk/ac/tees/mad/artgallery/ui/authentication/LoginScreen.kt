@@ -77,8 +77,8 @@ fun LoginScreen(
         }
 
         is AuthState.Success->{
-            navController.navigate("home"){
-                popUpTo("login_screen"){inclusive=true}
+            navController.navigate("home_graph") {
+                popUpTo("auth_graph") { inclusive = true }
             }
         }
 

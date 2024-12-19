@@ -25,6 +25,7 @@ class AuthViewModel: ViewModel() {
     private val _authState = MutableStateFlow<AuthState>(AuthState.Idle)
     val authState = _authState.asStateFlow()
 
+
     private val _currentUser = MutableStateFlow<User?>(null)
     val currentUser = _currentUser.asStateFlow()
 
@@ -37,7 +38,6 @@ class AuthViewModel: ViewModel() {
         val loggedInUser = auth.currentUser
         if(loggedInUser!=null){
             _isLoggedIn.value = true
-            fetchCurrentUser(loggedInUser.email!!)
         }else{
             _isLoggedIn.value = false
             _authState.value = AuthState.Idle
@@ -99,26 +99,32 @@ class AuthViewModel: ViewModel() {
         }
     }
 
-    private fun fetchCurrentUser(email: String){
-        firestore.collection("users")
-            .document(email).get()
-            .addOnSuccessListener { obUser->
-                if(obUser.exists()){
-                    val fullname = obUser.getString("fullname") ?:""
-                    val user = User(fullname, email)
-                    _currentUser.value = user
-                }
-
-            }
-            .addOnFailureListener {
-                _authState.value = AuthState.Failure(it.message?:"Error getting the user")
-            }
-    }
-
     fun logout(){
         auth.signOut()
+        _isLoggedIn.value = false
         _currentUser.value = null
         _authState.value = AuthState.Idle
+    }
+
+    fun fetchCurrentUser(){
+        val user = auth.currentUser
+        user?.let {
+            val userid = user.uid
+            firestore.collection("users")
+                .document(userid).get()
+                .addOnSuccessListener { obUser->
+                    if(obUser.exists()){
+                        val fullname = obUser.getString("fullname") ?:""
+                        val email = obUser.getString("email")?:""
+                        val user = User(fullname, email)
+                        _currentUser.value = user
+                    }
+
+                }
+                .addOnFailureListener {
+                    _authState.value = AuthState.Failure(it.message?:"Error getting the user")
+                }
+        }
     }
 
 }

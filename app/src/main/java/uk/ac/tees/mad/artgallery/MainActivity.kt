@@ -22,7 +22,7 @@ class MainActivity : ComponentActivity() {
             }
         }
 
-        val authenticated = authViewModel.isLoggedIn.value
+        val isAuthenticated = authViewModel.isLoggedIn.value
 
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -30,7 +30,10 @@ class MainActivity : ComponentActivity() {
 
             val navController = rememberNavController()
             ArtGalleryTheme {
-                MainNavigation(navController, authenticated)
+                MainNavigation(
+                    navController,
+                    isAuthenticated,
+                    authViewModel)
             }
         }
     }

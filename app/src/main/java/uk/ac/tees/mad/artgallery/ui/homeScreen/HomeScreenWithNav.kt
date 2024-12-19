@@ -5,36 +5,40 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import uk.ac.tees.mad.artgallery.firebaseauth.viewmodel.AuthViewModel
 import uk.ac.tees.mad.artgallery.ui.homeScreen.bottomnavigation.BottomNavigation
 
 
-@Preview
 @Composable
 fun HomeScreenWithNav(
-//    navController: NavHostController,
-//    authViewModel: AuthViewModel
+    navController: NavHostController,
+    authViewModel: AuthViewModel
 ){
 
-    val navController = rememberNavController()
+    val homenavController = rememberNavController()
     Scaffold (
         bottomBar = {
-            BottomNavigation(navController)
+            BottomNavigation(homenavController)
         }
     ){innerpadding->
         Box(
             modifier = Modifier
                 .padding(innerpadding)
         ){
-            NavHost(navController = navController, startDestination = "home_screen") {
+            NavHost(navController = homenavController, startDestination = "home_screen") {
                 composable("home_screen"){
                     HomeScreen()
                 }
                 composable("profile_screen"){
-                    ProfileScreen()
+                    ProfileScreen(
+                        navController,
+                        authViewModel
+                    )
                 }
             }
         }

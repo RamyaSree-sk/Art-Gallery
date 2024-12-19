@@ -98,8 +98,9 @@ fun OnBoardingScreen(
                 modifier = Modifier
                     .fillMaxWidth(0.7f),
                 onClick = {
-                    navController.popBackStack()
-                    navController.navigate("login_screen")
+                    navController.navigate("login_screen"){
+                        popUpTo("on_boarding")
+                    }
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFFB043E0),

@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigation
 import androidx.navigation.navigation
 import uk.ac.tees.mad.artgallery.firebaseauth.viewmodel.AuthViewModel
 import uk.ac.tees.mad.artgallery.ui.authentication.LoginScreen
@@ -12,9 +13,11 @@ import uk.ac.tees.mad.artgallery.ui.authentication.SignUpScreen
 import uk.ac.tees.mad.artgallery.ui.homeScreen.HomeScreenWithNav
 
 @Composable
-fun MainNavigation (navController: NavHostController, isAuthenticated: Boolean){
-
-    val authViewModel = AuthViewModel()
+fun MainNavigation (
+    navController: NavHostController,
+    isAuthenticated: Boolean,
+    authViewModel: AuthViewModel
+){
 
     NavHost(
         navController = navController,
@@ -35,7 +38,11 @@ fun MainNavigation (navController: NavHostController, isAuthenticated: Boolean){
 
         // Home graph
         navigation(startDestination = "home", route = "home_graph") {
-            composable("home") { HomeScreenWithNav(/*authViewModel*/) }
+            composable("home") {
+                HomeScreenWithNav(
+                    navController,
+                    authViewModel)
+            }
         }
     }
 }
