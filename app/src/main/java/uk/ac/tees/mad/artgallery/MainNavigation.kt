@@ -11,12 +11,14 @@ import uk.ac.tees.mad.artgallery.ui.authentication.LoginScreen
 import uk.ac.tees.mad.artgallery.ui.authentication.OnBoardingScreen
 import uk.ac.tees.mad.artgallery.ui.authentication.SignUpScreen
 import uk.ac.tees.mad.artgallery.ui.homeScreen.HomeScreenWithNav
+import uk.ac.tees.mad.artgallery.ui.homeScreen.viewmodel.HomeViewModel
 
 @Composable
 fun MainNavigation (
     navController: NavHostController,
     isAuthenticated: Boolean,
-    authViewModel: AuthViewModel
+    authViewModel: AuthViewModel,
+    homeViewModel: HomeViewModel
 ){
 
     NavHost(
@@ -41,7 +43,8 @@ fun MainNavigation (
             composable("home") {
                 HomeScreenWithNav(
                     navController,
-                    authViewModel)
+                    authViewModel,
+                    homeViewModel)
             }
         }
     }

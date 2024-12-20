@@ -78,6 +78,11 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+    //Retrofit dependency
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+
+
     implementation (platform("com.google.firebase:firebase-bom:31.0.0"))
 
     // Declare the dependency for the Firebase Authentication library

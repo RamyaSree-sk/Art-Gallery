@@ -12,12 +12,14 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import uk.ac.tees.mad.artgallery.firebaseauth.viewmodel.AuthViewModel
 import uk.ac.tees.mad.artgallery.ui.homeScreen.bottomnavigation.BottomNavigation
+import uk.ac.tees.mad.artgallery.ui.homeScreen.viewmodel.HomeViewModel
 
 
 @Composable
 fun HomeScreenWithNav(
     navController: NavHostController,
-    authViewModel: AuthViewModel
+    authViewModel: AuthViewModel,
+    homeViewModel: HomeViewModel
 ){
 
     val homenavController = rememberNavController()
@@ -32,7 +34,9 @@ fun HomeScreenWithNav(
         ){
             NavHost(navController = homenavController, startDestination = "home_screen") {
                 composable("home_screen"){
-                    HomeScreen()
+                    HomeScreen(
+                        homeViewModel
+                    )
                 }
                 composable("profile_screen"){
                     ProfileScreen(

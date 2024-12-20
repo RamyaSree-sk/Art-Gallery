@@ -8,11 +8,13 @@ import androidx.activity.viewModels
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.rememberNavController
 import uk.ac.tees.mad.artgallery.firebaseauth.viewmodel.AuthViewModel
+import uk.ac.tees.mad.artgallery.ui.homeScreen.viewmodel.HomeViewModel
 import uk.ac.tees.mad.artgallery.ui.theme.ArtGalleryTheme
 
 class MainActivity : ComponentActivity() {
 
     private val authViewModel by viewModels<AuthViewModel>()
+    private val homeViewModel by viewModels<HomeViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -33,7 +35,8 @@ class MainActivity : ComponentActivity() {
                 MainNavigation(
                     navController,
                     isAuthenticated,
-                    authViewModel)
+                    authViewModel,
+                    homeViewModel)
             }
         }
     }

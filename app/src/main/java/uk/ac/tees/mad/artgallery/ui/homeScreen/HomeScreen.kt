@@ -5,12 +5,19 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
+import uk.ac.tees.mad.artgallery.ui.homeScreen.viewmodel.HomeViewModel
 
 
 @Composable
-fun HomeScreen(){
+fun HomeScreen(
+    homeViewModel: HomeViewModel
+){
+
+    val artDetails by homeViewModel.artDetail.collectAsState()
 
     Box(
         modifier = Modifier
@@ -18,7 +25,7 @@ fun HomeScreen(){
     ) {
         Column {
             Text(
-                text = "This is the Home Screen!!",
+                text = artDetails.toString(),
                 fontSize = 20.sp
             )
         }
