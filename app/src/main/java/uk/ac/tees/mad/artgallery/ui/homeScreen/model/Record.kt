@@ -4,9 +4,10 @@ data class Record(
     val culture: String,
     val dated: String,
     val department: String,
-    val description: String,
     val objectid: Int,
     val primaryimageurl: String,
     val title: String,
     val url: String,
+    val classification: String,
+    val division: String
 )

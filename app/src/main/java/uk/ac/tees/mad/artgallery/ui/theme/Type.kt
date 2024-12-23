@@ -28,6 +28,18 @@ val poppinsFam = FontFamily(
     Font(googleFont = poppins, fontProvider = provider)
 )
 
+val quicksand = GoogleFont("Quicksand")
+
+val quicksandFam = FontFamily(
+    Font(googleFont = quicksand, fontProvider = provider)
+)
+
+val dosis = GoogleFont("Dosis")
+
+val dosisFam = FontFamily(
+    Font(googleFont = dosis, fontProvider = provider)
+)
+
 
 // Set of Material typography styles to start with
 val Typography = Typography(

@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -28,22 +29,19 @@ fun HomeScreenWithNav(
             BottomNavigation(homenavController)
         }
     ){innerpadding->
-        Box(
-            modifier = Modifier
-                .padding(innerpadding)
-        ){
-            NavHost(navController = homenavController, startDestination = "home_screen") {
-                composable("home_screen"){
-                    HomeScreen(
-                        homeViewModel
-                    )
-                }
-                composable("profile_screen"){
-                    ProfileScreen(
-                        navController,
-                        authViewModel
-                    )
-                }
+        NavHost(navController = homenavController, startDestination = "home_screen") {
+            composable("home_screen"){
+                HomeScreen(
+                    homeViewModel,
+                    innerpadding
+                )
+            }
+            composable("profile_screen"){
+                ProfileScreen(
+                    navController,
+                    authViewModel,
+                    innerpadding
+                )
             }
         }
     }
