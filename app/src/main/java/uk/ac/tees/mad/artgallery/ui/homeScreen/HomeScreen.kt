@@ -1,5 +1,6 @@
 package uk.ac.tees.mad.artgallery.ui.homeScreen
 
+import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -20,10 +21,14 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import uk.ac.tees.mad.artgallery.ArtDetailsActivity
 import uk.ac.tees.mad.artgallery.R
 import uk.ac.tees.mad.artgallery.ui.homeScreen.model.Record
 import uk.ac.tees.mad.artgallery.ui.homeScreen.viewmodel.HomeViewModel
@@ -51,7 +56,11 @@ fun HomeScreen(
 }
 
 @Composable
-fun ArtDetailListItem(record: Record){
+fun ArtDetailListItem(
+    record: Record
+){
+    val context = LocalContext.current
+
     Column(
         modifier = Modifier
             .fillMaxSize(),
@@ -61,7 +70,13 @@ fun ArtDetailListItem(record: Record){
         Card (
             modifier = Modifier
                 .padding(10.dp),
-            colors = CardDefaults.cardColors()
+            colors = CardDefaults.cardColors(),
+            onClick = {
+                val intent = Intent(context, ArtDetailsActivity::class.java).apply {
+                    putExtra("art_detail", record)
+                }
+                context.startActivity(intent)
+            }
         ){
             Card(
                 modifier = Modifier

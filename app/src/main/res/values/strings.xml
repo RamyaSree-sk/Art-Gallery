@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Art Gallery</string>
+    <string name="title_activity_art_details">ArtDetailsActivity</string>
 </resources>

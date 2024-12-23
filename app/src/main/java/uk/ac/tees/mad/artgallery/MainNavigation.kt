@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.navigation
 import uk.ac.tees.mad.artgallery.firebaseauth.viewmodel.AuthViewModel
+import uk.ac.tees.mad.artgallery.ui.ArtDetailsScreen
 import uk.ac.tees.mad.artgallery.ui.authentication.LoginScreen
 import uk.ac.tees.mad.artgallery.ui.authentication.OnBoardingScreen
 import uk.ac.tees.mad.artgallery.ui.authentication.SignUpScreen
@@ -44,7 +45,8 @@ fun MainNavigation (
                 HomeScreenWithNav(
                     navController,
                     authViewModel,
-                    homeViewModel)
+                    homeViewModel
+                )
             }
         }
     }
