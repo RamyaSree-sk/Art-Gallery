@@ -7,5 +7,8 @@ import uk.ac.tees.mad.artgallery.ui.homeScreen.model.ArtDetails
 interface ApiInterface {
 
     @GET("object?")
-    suspend fun getArt(@Query("apikey")apikey: String): ArtDetails
+    suspend fun getArt(
+        @Query("apikey")apikey: String,
+        @Query("page")page: Int
+    ): ArtDetails
 }
