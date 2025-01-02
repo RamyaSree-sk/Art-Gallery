@@ -85,6 +85,9 @@ dependencies {
 
     implementation (platform("com.google.firebase:firebase-bom:31.0.0"))
 
+    //Glide library implementation
+    implementation("com.github.bumptech.glide:compose:1.0.0-beta01")
+
     // Declare the dependency for the Firebase Authentication library
     implementation("com.google.firebase:firebase-auth-ktx")
 }

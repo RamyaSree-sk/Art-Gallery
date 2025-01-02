@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -36,6 +37,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
+import com.bumptech.glide.integration.compose.placeholder
 import uk.ac.tees.mad.artgallery.ArtDetailsActivity
 import uk.ac.tees.mad.artgallery.R
 import uk.ac.tees.mad.artgallery.ui.homeScreen.model.Record
@@ -94,7 +98,7 @@ fun HomeScreen(
         ) {
             LazyColumn(
                 modifier = Modifier
-                    .padding(),
+                    .fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ){
@@ -123,6 +127,7 @@ fun HomeScreen(
     }
 }
 
+@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun ArtDetailListItem(
     record: Record
@@ -154,9 +159,13 @@ fun ArtDetailListItem(
                 elevation = CardDefaults.elevatedCardElevation(20.dp),
                 shape = RoundedCornerShape(30.dp)
             ) {
-                Image(
-                    painter = painterResource(id = R.drawable.avatar),
-                    contentDescription ="App Icon"
+                GlideImage(
+                    modifier = Modifier
+                        .padding(5.dp)
+                        .aspectRatio(1.5f/1.5f),
+                    model = record.primaryimageurl,
+                    failure = placeholder(R.drawable.failure),
+                    contentDescription ="Art Image"
                 )
             }
             Text(

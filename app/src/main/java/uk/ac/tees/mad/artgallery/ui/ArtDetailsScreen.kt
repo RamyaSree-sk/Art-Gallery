@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -23,6 +24,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
+import com.bumptech.glide.integration.compose.placeholder
 import uk.ac.tees.mad.artgallery.R
 import uk.ac.tees.mad.artgallery.ui.homeScreen.model.Record
 
@@ -51,6 +55,7 @@ fun ArtDetailsScreen(
     }
 }
 
+@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun FullArtDetail(
     artDetails: Record
@@ -59,9 +64,13 @@ fun FullArtDetail(
         elevation = CardDefaults.elevatedCardElevation(20.dp),
         shape = RoundedCornerShape(30.dp)
     ) {
-        Image(
-            painter = painterResource(id = R.drawable.avatar),
-            contentDescription ="App Icon"
+        GlideImage(
+            modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(3f/3f),
+            model = artDetails.primaryimageurl,
+            failure = placeholder(R.drawable.failure),
+            contentDescription ="Art Image"
         )
     }
     Spacer(modifier = Modifier.size(10.dp))

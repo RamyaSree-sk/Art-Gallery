@@ -50,7 +50,6 @@ import uk.ac.tees.mad.artgallery.ui.theme.poppinsFam
 import uk.ac.tees.mad.artgallery.ui.theme.quicksandFam
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(
     navController: NavHostController,
