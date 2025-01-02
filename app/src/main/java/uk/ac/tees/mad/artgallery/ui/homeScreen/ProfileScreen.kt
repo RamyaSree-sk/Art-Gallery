@@ -37,9 +37,9 @@ import androidx.navigation.NavHostController
 import uk.ac.tees.mad.artgallery.R
 import uk.ac.tees.mad.artgallery.firebaseauth.viewmodel.AuthViewModel
 import uk.ac.tees.mad.artgallery.ui.homeScreen.viewmodel.HomeViewModel
-import uk.ac.tees.mad.artgallery.ui.theme.dosisFam
 import uk.ac.tees.mad.artgallery.ui.theme.poppinsFam
 import uk.ac.tees.mad.artgallery.ui.theme.quicksandFam
+import uk.ac.tees.mad.artgallery.ui.theme.ubuntuFam
 
 
 @Composable
@@ -107,7 +107,7 @@ fun ProfileScreen(
                 Text(
                     text = it,
                     fontSize = 18.sp,
-                    fontFamily = dosisFam,
+                    fontFamily = ubuntuFam,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -128,7 +128,7 @@ fun ProfileScreen(
                 Text(
                     text = it,
                     fontSize = 18.sp,
-                    fontFamily = dosisFam,
+                    fontFamily = ubuntuFam,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier
                         .fillMaxWidth()

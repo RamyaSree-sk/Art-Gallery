@@ -34,10 +34,10 @@ val quicksandFam = FontFamily(
     Font(googleFont = quicksand, fontProvider = provider)
 )
 
-val dosis = GoogleFont("Dosis")
+val ubuntu = GoogleFont("Ubuntu")
 
-val dosisFam = FontFamily(
-    Font(googleFont = dosis, fontProvider = provider)
+val ubuntuFam = FontFamily(
+    Font(googleFont = ubuntu, fontProvider = provider)
 )
 
 
