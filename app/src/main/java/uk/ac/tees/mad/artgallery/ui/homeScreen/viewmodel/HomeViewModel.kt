@@ -18,6 +18,9 @@ class HomeViewModel: ViewModel() {
 
     private val API_KEY = "0990aa20-8197-440d-ae3f-df69bd11c091"
 
+    private val _darkTheme = MutableStateFlow(false)
+    val darkTheme = _darkTheme.asStateFlow()
+
     private val _artGallery = MutableStateFlow<ArtDetails?>(null)
     val artGallery = _artGallery.asStateFlow()
 
@@ -85,6 +88,17 @@ class HomeViewModel: ViewModel() {
         if(!_isSearching.value){
             updateSearchQuery("")
         }
+    }
+
+    //Theme toggling.
+    fun defaultTheme(q: Boolean){
+        if (q){
+            _darkTheme.value = true
+        }
+    }
+
+    fun changeTheme(){
+        _darkTheme.value = !_darkTheme.value!!
     }
 
 }

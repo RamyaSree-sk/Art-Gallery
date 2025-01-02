@@ -5,6 +5,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.runtime.collectAsState
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.rememberNavController
 import uk.ac.tees.mad.artgallery.firebaseauth.viewmodel.AuthViewModel
@@ -24,17 +26,20 @@ class MainActivity : ComponentActivity() {
             }
         }
 
-        val isAuthenticated = authViewModel.isLoggedIn.value
-
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
 
             val navController = rememberNavController()
-            ArtGalleryTheme {
+            val isAuthenticated = authViewModel.isLoggedIn.collectAsState()
+            val darkTheme = homeViewModel.darkTheme.collectAsState()
+
+            homeViewModel.defaultTheme(isSystemInDarkTheme())
+
+            ArtGalleryTheme(darkTheme = darkTheme.value) {
                 MainNavigation(
                     navController,
-                    isAuthenticated,
+                    isAuthenticated.value,
                     authViewModel,
                     homeViewModel)
             }
