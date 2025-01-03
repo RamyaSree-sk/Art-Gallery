@@ -110,10 +110,15 @@ fun SignUpScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(modifier = Modifier.weight(0.6f))
-            Image(
-                painter = painterResource(id = R.drawable.newicon),
-                contentDescription ="App Icon"
-            )
+            Card(
+                elevation = CardDefaults.elevatedCardElevation(20.dp),
+                shape = RoundedCornerShape(30.dp)
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.newicon),
+                    contentDescription ="App Icon"
+                )
+            }
             Spacer(modifier = Modifier.size(20.dp))
             Card (
                 modifier = Modifier.padding(5.dp),
@@ -217,47 +222,6 @@ fun SignUpScreen(
                             },
                             label = {
                                 Text(text = "Password")
-                            },
-                            shape = RoundedCornerShape(50.dp),
-                            colors = OutlinedTextFieldDefaults.colors(
-                                unfocusedContainerColor = Color.Unspecified,
-                                focusedContainerColor = lightPurple,
-                                focusedLabelColor = Color.Black,
-                                focusedBorderColor = Color.Black,
-                                unfocusedBorderColor = Color.Black
-                            )
-                        )
-                        Spacer(modifier = Modifier.size(15.dp))
-
-                        OutlinedTextField(
-                            modifier = Modifier
-                                .fillMaxWidth(0.8f),
-                            value = password,
-                            onValueChange = {
-                                password = it
-                            },
-                            visualTransformation = if (passwordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
-                            leadingIcon = {
-                                Icon(
-                                    imageVector = Icons.Filled.Key,
-                                    contentDescription = "Password icon"
-                                )
-                            },
-                            trailingIcon = {
-                                val showPassword = if (passwordVisibility)
-                                    Icons.Filled.Visibility
-                                else
-                                    Icons.Filled.VisibilityOff
-
-                                IconButton(onClick = { passwordVisibility = !passwordVisibility }) {
-                                    Icon(
-                                        imageVector = showPassword,
-                                        contentDescription = "Show Password"
-                                    )
-                                }
-                            },
-                            label = {
-                                Text(text = "Re-type Password")
                             },
                             shape = RoundedCornerShape(50.dp),
                             colors = OutlinedTextFieldDefaults.colors(

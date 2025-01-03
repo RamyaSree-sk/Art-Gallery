@@ -108,10 +108,15 @@ fun LoginScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(modifier = Modifier.weight(0.6f))
-            Image(
-                painter = painterResource(id = R.drawable.newicon),
-                contentDescription = "Image"
-            )
+            Card(
+                elevation = CardDefaults.elevatedCardElevation(20.dp),
+                shape = RoundedCornerShape(30.dp)
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.newicon),
+                    contentDescription ="App Icon"
+                )
+            }
 
             Spacer(modifier = Modifier.size(20.dp))
 
@@ -198,20 +203,6 @@ fun LoginScreen(
                             horizontalArrangement = Arrangement.Center,
                             verticalAlignment = Alignment.CenterVertically
                         ){
-                            Checkbox(
-                                checked = isChecked,
-                                onCheckedChange ={
-                                    isChecked = it
-                                }
-                            )
-                            Text(
-                                text = "Remember me?",
-                                fontSize = 15.sp,
-                                modifier = Modifier
-                                    .clickable {
-                                        isChecked = !isChecked
-                                    }
-                            )
                             Spacer(modifier = Modifier.weight(1f))
                             Text(
                                 text = "Forgot Password?",

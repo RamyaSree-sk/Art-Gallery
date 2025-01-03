@@ -1,6 +1,5 @@
 package uk.ac.tees.mad.artgallery.ui.homeScreen
 
-import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -14,15 +13,20 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -53,11 +57,72 @@ fun ProfileScreen(
     val currentUser by authViewModel.currentUser.collectAsState()
     val drTheme by homeViewModel.darkTheme.collectAsState()
 
+    //States for updating the user information.
+    var showdialog by remember{mutableStateOf(false)}
+    var updatedfullName by remember{ mutableStateOf(currentUser?.fullname ?: "") }
+    var updatedEmail by remember{ mutableStateOf(currentUser?.email ?: "") }
+    var updatedPassword by remember { mutableStateOf("") }
+    var errormessage by remember { mutableStateOf("Password required for updating") }
+
     // Fetch current user information
     LaunchedEffect(key1 = Unit) {
-        Log.i("The current user:", currentUser.toString())
         authViewModel.fetchCurrentUser()
     }
+    //Syncing the current user along with updated fullname and email.
+    LaunchedEffect(currentUser) {
+        authViewModel.fetchCurrentUser()
+        updatedfullName = currentUser?.fullname ?: ""
+        updatedEmail = currentUser?.email ?: ""
+    }
+
+
+    if(showdialog){
+        AlertDialog(
+            onDismissRequest = {
+                showdialog = false
+            },
+            title = {
+                Text(text = "Edit profile")
+            },
+            text = {
+                Column {
+                    TextField(
+                        value = updatedfullName,
+                        onValueChange ={updatedfullName=it}
+                    )
+                    Spacer(modifier = Modifier.size(10.dp))
+                    TextField(
+                        value = updatedEmail,
+                        onValueChange ={updatedEmail = it}
+                    )
+                    Spacer(modifier = Modifier.size(10.dp))
+                    TextField(
+                        value = updatedPassword,
+                        onValueChange ={updatedPassword = it},
+                        label = { Text(text = errormessage)},
+                    )
+                }
+            },
+            dismissButton = {
+                Button(onClick = { showdialog = false }) {
+                    Text(text = "Cancel")
+                }
+            },
+            confirmButton = {
+                Button(onClick = {
+                    if (updatedPassword.isNotEmpty()){
+                        authViewModel.updateCurrentUser(updatedfullName, updatedEmail, updatedPassword)
+                        showdialog = false
+                    }else{
+                        errormessage = "Please enter password"
+                    }
+                }) {
+                    Text(text = "Update")
+                }
+            }
+        )
+    }
+
 
     Column(
         modifier = Modifier
@@ -70,7 +135,7 @@ fun ProfileScreen(
             modifier = Modifier
                 .padding(15.dp),
             text = "Profile",
-            fontSize = 35.sp
+            fontSize = 25.sp
         )
         Spacer(modifier = Modifier.weight(0.5f))
         Image(
@@ -81,12 +146,10 @@ fun ProfileScreen(
                 .size(width)
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
-
-
+        Spacer(modifier = Modifier.weight(0.5f))
         Card(
             elevation = CardDefaults.cardElevation(5.dp),
-            onClick = { /* Handle update picture click */ }
+            onClick = { /*Updating the user profile*/ }
         ) {
             Text(
                 text = "Add new/Update picture",
@@ -96,49 +159,62 @@ fun ProfileScreen(
             )
         }
 
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.weight(0.5f))
 
         Card(
-            modifier = Modifier.fillMaxWidth(0.8f),
+            elevation = CardDefaults.cardElevation(5.dp),
+            onClick = { showdialog = true }
+        ) {
+            Text(
+                text = "Edit details",
+                fontFamily = quicksandFam,
+                fontSize = 15.sp,
+                modifier = Modifier.padding(5.dp)
+            )
+        }
+
+        Spacer(modifier = Modifier.weight(0.5f))
+
+        Card(
+            modifier = Modifier.fillMaxWidth(0.9f),
             elevation = CardDefaults.elevatedCardElevation(10.dp),
             shape = RoundedCornerShape(35.dp)
         ) {
             currentUser?.fullname?.let {
                 Text(
+                    modifier = Modifier
+                        .padding(10.dp),
                     text = it,
                     fontSize = 18.sp,
                     fontFamily = ubuntuFam,
                     fontWeight = FontWeight.Bold,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(10.dp),
                     textAlign = TextAlign.Center
                 )
             }
         }
 
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.weight(0.5f))
 
         Card(
-            modifier = Modifier.fillMaxWidth(0.8f),
+            modifier = Modifier.fillMaxWidth(0.9f),
             elevation = CardDefaults.elevatedCardElevation(10.dp),
             shape = RoundedCornerShape(35.dp)
         ) {
-            currentUser?.email?.let {
+            currentUser?.email?.let { email ->
                 Text(
-                    text = it,
+                    modifier = Modifier
+                        .padding(10.dp),
+                    maxLines = 1,
+                    text = email,
                     fontSize = 18.sp,
                     fontFamily = ubuntuFam,
                     fontWeight = FontWeight.Bold,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(10.dp),
                     textAlign = TextAlign.Center
                 )
             }
         }
 
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.weight(0.5f))
 
         Button(
             modifier = Modifier.fillMaxWidth(0.8f),

@@ -1,8 +1,11 @@
 package uk.ac.tees.mad.artgallery.firebaseauth.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -106,25 +109,62 @@ class AuthViewModel: ViewModel() {
         _authState.value = AuthState.Idle
     }
 
-    fun fetchCurrentUser(){
+    fun fetchCurrentUser() {
         val user = auth.currentUser
         user?.let {
-            val userid = user.uid
+            Log.i("The email here: ", user.email.toString())
+            val userId = user.uid
             firestore.collection("users")
-                .document(userid).get()
-                .addOnSuccessListener { obUser->
-                    if(obUser.exists()){
-                        val fullname = obUser.getString("fullname") ?:""
-                        val email = obUser.getString("email")?:""
-                        val user = User(fullname, email)
-                        _currentUser.value = user
+                .document(userId).get()
+                .addOnSuccessListener { obUser ->
+                    if (obUser.exists()) {
+                        val fullname = obUser.getString("fullname") ?: ""
+                        val email = obUser.getString("email") ?: ""
+                        val updatedUser = User(fullname, email)
+                        _currentUser.value = updatedUser
                     }
-
                 }
                 .addOnFailureListener {
-                    _authState.value = AuthState.Failure(it.message?:"Error getting the user")
+                    _authState.value = AuthState.Failure(it.message ?: "Error getting the user")
                 }
         }
     }
 
+    fun updateCurrentUser(fullname: String, email: String, password: String) {
+        val user = auth.currentUser
+        if (user != null) {
+            val userId = user.uid
+            val userData = hashMapOf(
+                "fullname" to fullname,
+                "email" to email
+            )
+            val credential = EmailAuthProvider.getCredential(user.email!!, password)
+            user.reauthenticate(credential)
+                .addOnCompleteListener {
+                    firestore.collection("users")
+                        .document(userId)
+                        .update(userData as Map<String, Any>)
+                }
+                .addOnSuccessListener {
+                    Log.i("Firestore Update", "User data updated in Firestore")
+                    user.updateProfile(UserProfileChangeRequest.Builder().setDisplayName(fullname).build())
+                        .addOnCompleteListener {
+                            Log.i("Fullname: ", "Successfully")
+                            if (it.isSuccessful){
+                                user.updateEmail(email)
+                                    .addOnCompleteListener {
+                                        Log.i("Email:", "Successfully")
+                                        fetchCurrentUser()
+                                    }
+                            }
+                        }
+                }
+                .addOnFailureListener {
+                    Log.e("Firestore Error", "Failed to update user in Firestore")
+                    _authState.value = AuthState.Failure("Failed to update user in Firestore")
+                }
+        } else {
+            _authState.value = AuthState.Failure("User not logged in")
+        }
+    }
 }

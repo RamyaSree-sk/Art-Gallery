@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
 import android.util.Log
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -158,6 +159,10 @@ class HomeViewModel(
         val connectivity = getApplication<Application>().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val netInfo = connectivity.activeNetworkInfo
         return netInfo!=null && netInfo.isConnected
+    }
+
+    fun initializeTheme(isDark: Boolean){
+        _darkTheme.value = isDark
     }
 
 }
