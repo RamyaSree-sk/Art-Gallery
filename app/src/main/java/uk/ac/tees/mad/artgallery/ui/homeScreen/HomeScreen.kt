@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import androidx.room.Room
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.bumptech.glide.integration.compose.placeholder
@@ -118,8 +119,8 @@ fun HomeScreen(
             ) {
                 items(artDetails.size){ind->
                     ArtDetailListItem(record = artDetails[ind])
-                    if (ind >= artDetails.size-3){
-                        homeViewModel.fetchRecord()
+                    if (ind >= artDetails.size-3 && homeViewModel.isNetworkAvailable()){
+                        homeViewModel.fetchRecordfromApi()
                     }
                 }
             }

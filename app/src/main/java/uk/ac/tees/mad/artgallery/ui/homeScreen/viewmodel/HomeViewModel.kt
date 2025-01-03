@@ -1,6 +1,8 @@
 package uk.ac.tees.mad.artgallery.ui.homeScreen.viewmodel
 
 import android.app.Application
+import android.content.Context
+import android.net.ConnectivityManager
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
@@ -18,9 +20,12 @@ import uk.ac.tees.mad.artgallery.roomdb.RecordDatabase
 import uk.ac.tees.mad.artgallery.roomdb.toLocalRecord
 import uk.ac.tees.mad.artgallery.ui.homeScreen.model.ArtDetails
 import uk.ac.tees.mad.artgallery.ui.homeScreen.model.Record
+import uk.ac.tees.mad.artgallery.ui.homeScreen.model.toRecord
 import uk.ac.tees.mad.artgallery.ui.homeScreen.requests.RetrofitInstance
 
-class HomeViewModel(application: Application): AndroidViewModel(application) {
+class HomeViewModel(
+    application: Application
+): AndroidViewModel(application) {
 
     private val API_KEY = "0990aa20-8197-440d-ae3f-df69bd11c091"
 
@@ -70,7 +75,17 @@ class HomeViewModel(application: Application): AndroidViewModel(application) {
         fetchRecord()
     }
 
-    fun fetchRecord(){
+    //Function involving datafetching from the api or room.
+    private fun fetchRecord(){
+        if (isNetworkAvailable()){
+            fetchRecordfromApi()
+        }else{
+            fetchRecordFromRoom()
+        }
+    }
+
+
+    fun fetchRecordfromApi(){
 
         if (isLoading || pagenum.value>(_artGallery.value?.info?.pages ?: 1)) return
 
@@ -101,6 +116,20 @@ class HomeViewModel(application: Application): AndroidViewModel(application) {
         }
     }
 
+    private fun fetchRecordFromRoom(){
+        viewModelScope.launch {
+            try {
+                _artDetail.value =  recordDao.getAllRecords().map {record->
+                    record.toRecord()
+                }
+            }catch (e: Exception){
+                Log.i("Error fetching: ", "Data not fetched from roomdatabase.")
+            }
+        }
+    }
+
+
+    //Function involved in searching in the home screen.
     fun updateSearchQuery(query: String){
         _text.value = query
     }
@@ -121,6 +150,14 @@ class HomeViewModel(application: Application): AndroidViewModel(application) {
 
     fun changeTheme(){
         _darkTheme.value = !_darkTheme.value!!
+    }
+
+
+    //Checking the network connectivity
+    fun isNetworkAvailable(): Boolean{
+        val connectivity = getApplication<Application>().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val netInfo = connectivity.activeNetworkInfo
+        return netInfo!=null && netInfo.isConnected
     }
 
 }
