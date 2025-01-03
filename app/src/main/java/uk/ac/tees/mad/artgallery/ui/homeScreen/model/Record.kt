@@ -6,7 +6,6 @@ data class Record(
     val culture: String,
     val dated: String,
     val department: String,
-    val objectid: Int,
     val primaryimageurl: String,
     val title: String,
     val url: String,
@@ -14,5 +13,6 @@ data class Record(
     val division: String,
     val description: String,
     val labeltext: String,
-    val provenance: String
+    val provenance: String,
+    val objectid: Int
 ):Serializable

@@ -1,8 +1,12 @@
 package uk.ac.tees.mad.artgallery.ui.homeScreen.viewmodel
 
+import android.app.Application
 import android.util.Log
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.room.Room
+import androidx.room.RoomDatabase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -10,13 +14,22 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import uk.ac.tees.mad.artgallery.roomdb.RecordDatabase
+import uk.ac.tees.mad.artgallery.roomdb.toLocalRecord
 import uk.ac.tees.mad.artgallery.ui.homeScreen.model.ArtDetails
 import uk.ac.tees.mad.artgallery.ui.homeScreen.model.Record
 import uk.ac.tees.mad.artgallery.ui.homeScreen.requests.RetrofitInstance
 
-class HomeViewModel: ViewModel() {
+class HomeViewModel(application: Application): AndroidViewModel(application) {
 
     private val API_KEY = "0990aa20-8197-440d-ae3f-df69bd11c091"
+
+    private val rdb = Room.databaseBuilder(
+        application,
+        RecordDatabase::class.java, "record.db"
+    ).build()
+
+    private val recordDao = rdb.dao()
 
     private val _darkTheme = MutableStateFlow(false)
     val darkTheme = _darkTheme.asStateFlow()
@@ -66,11 +79,20 @@ class HomeViewModel: ViewModel() {
             try {
                 val allRecords = RetrofitInstance.api.getArt(API_KEY, pagenum.value)
                 _artGallery.value = allRecords
+
+                val recordEntities = allRecords.records.map{
+                    it.toLocalRecord()
+                }
                 _artDetail.value = _artDetail.value + allRecords.records
+
+                recordDao.addRecord(recordEntities)
+
+                val insertedData = recordDao.getAllRecords()
+
                 _pagenum.value += 1
                 Log.i(
-                    "Data Obtained: ",
-                    "The call is successfull and data is: ${_artDetail.value}"
+                    "Database insertion: ",
+                    insertedData.toString()
                 )
             }catch (e: Exception){
                 Log.i("Error", "Cannot fetch the art Details from the api")
