@@ -104,4 +104,7 @@ dependencies {
 
     // To use Kotlin annotation processing tool (kapt)
     kapt("androidx.room:room-compiler:2.6.1")
+
+    //Firebase Storage dependency implementation
+    implementation("com.google.firebase:firebase-storage-ktx:21.0.0")
 }

@@ -1,5 +1,8 @@
 package uk.ac.tees.mad.artgallery.ui.homeScreen
 
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -38,6 +41,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
+import com.bumptech.glide.integration.compose.placeholder
 import uk.ac.tees.mad.artgallery.R
 import uk.ac.tees.mad.artgallery.firebaseauth.viewmodel.AuthViewModel
 import uk.ac.tees.mad.artgallery.ui.homeScreen.viewmodel.HomeViewModel
@@ -46,6 +52,7 @@ import uk.ac.tees.mad.artgallery.ui.theme.quicksandFam
 import uk.ac.tees.mad.artgallery.ui.theme.ubuntuFam
 
 
+@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun ProfileScreen(
     navController: NavHostController,
@@ -58,6 +65,7 @@ fun ProfileScreen(
     val drTheme by homeViewModel.darkTheme.collectAsState()
 
     //States for updating the user information.
+    var imageUri by remember { mutableStateOf<Uri?>(null) }
     var showdialog by remember{mutableStateOf(false)}
     var updatedfullName by remember{ mutableStateOf(currentUser?.fullname ?: "") }
     var updatedEmail by remember{ mutableStateOf(currentUser?.email ?: "") }
@@ -73,6 +81,11 @@ fun ProfileScreen(
         authViewModel.fetchCurrentUser()
         updatedfullName = currentUser?.fullname ?: ""
         updatedEmail = currentUser?.email ?: ""
+    }
+
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+        imageUri = uri
+        uri?.let { authViewModel.uploadProfileImage(it) }
     }
 
 
@@ -138,18 +151,22 @@ fun ProfileScreen(
             fontSize = 25.sp
         )
         Spacer(modifier = Modifier.weight(0.5f))
-        Image(
-            painter = painterResource(id = R.drawable.avatar),
+        GlideImage(
+            model = currentUser?.profileImageUrl,
             contentDescription = "Profile Picture",
             modifier = Modifier
                 .clip(CircleShape)
-                .size(width)
+                .size(width),
+            failure = placeholder(R.drawable.avatar----------------fff)
         )
 
         Spacer(modifier = Modifier.weight(0.5f))
         Card(
             elevation = CardDefaults.cardElevation(5.dp),
-            onClick = { /*Updating the user profile*/ }
+            onClick = {
+                /*Updating the user profile*/
+                launcher.launch("image/*")
+            }
         ) {
             Text(
                 text = "Add new/Update picture",
