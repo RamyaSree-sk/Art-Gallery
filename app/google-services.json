@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "862282035556",
-    "project_id": "art-gallery-7f0cb",
-    "storage_bucket": "art-gallery-7f0cb.appspot.com"
+    "project_number": "575915732377",
+    "project_id": "art-gallery-c9f96",
+    "storage_bucket": "lost2found-13849.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:862282035556:android:b605fa45f7658583af4a71",
+        "mobilesdk_app_id": "1:575915732377:android:024632256394ba10b07708",
         "android_client_info": {
           "package_name": "uk.ac.tees.mad.artgallery"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyD26JD5cbVtsSjO4Lanjnrm8L_vjpF4kZ8"
+          "current_key": "AIzaSyDFcf0DrBeA-FhsHH41WZRuyOWQXAqeK4w"
         }
       ],
       "services": {

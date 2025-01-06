@@ -157,7 +157,7 @@ fun ProfileScreen(
             modifier = Modifier
                 .clip(CircleShape)
                 .size(width),
-            failure = placeholder(R.drawable.avatar----------------fff)
+            failure = placeholder(R.drawable.avatar)
         )
 
         Spacer(modifier = Modifier.weight(0.5f))
